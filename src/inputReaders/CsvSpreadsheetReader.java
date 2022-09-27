@@ -43,5 +43,11 @@ public class CsvSpreadsheetReader implements SpreadsheetFileReader {
 		this.br = br;
 	}
 
+	@Override
+	public void close() throws IOException {
+		br.close();
+		
+	}
+
 
 }

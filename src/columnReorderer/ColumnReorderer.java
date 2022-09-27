@@ -1,5 +1,6 @@
 package columnReorderer;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -39,7 +40,8 @@ public class ColumnReorderer {
 				System.exit(-4);
 			}
 			else if (e.getCause().getClass().equals(FileNotFoundException.class)) {
-				System.out.println("ERROR: File extension not recognized");
+				System.out.println("ERROR: File not found");
+				System.out.println(e.getMessage());
 				System.exit(-5);
 			}
 		}
@@ -80,6 +82,8 @@ public class ColumnReorderer {
 			throw new InvalidArgumentException(e.getMessage(),e);
 		}
 		
+		String path = args[0];
+		
 		//Read original into temp file
 		tempFileIO.createFile();
 		try {
@@ -92,6 +96,7 @@ public class ColumnReorderer {
 		tempFileIO.saveFile();
 		
 		//Delete original
+		new File(args[0]).delete();
 		
 		//Create new file
 		

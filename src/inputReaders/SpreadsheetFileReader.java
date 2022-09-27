@@ -16,5 +16,6 @@ public interface SpreadsheetFileReader {
 	
 	public boolean hasData() throws IOException;
 
+	public void close() throws IOException;
 
 }
