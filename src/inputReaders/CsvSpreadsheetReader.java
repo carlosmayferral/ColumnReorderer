@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CsvSpreadsheetReader implements SpreadsheetFileReader {
 	
@@ -20,9 +21,17 @@ public class CsvSpreadsheetReader implements SpreadsheetFileReader {
 		br = new BufferedReader(new FileReader(new File(path)));
 	}
 
+	/**
+	 * For testing only
+	 */
+	public CsvSpreadsheetReader() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
-	public ArrayList<String> readLine() throws IOException {
-		return (ArrayList<String>) Arrays.asList(br.readLine().split(DELIMITER));
+	public List<String> readLine() throws IOException {
+		String[] delimited = br.readLine().split(DELIMITER);
+		return Arrays.asList(delimited);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Reads and writes objects from and to disk.
@@ -40,9 +41,9 @@ public class TempFileIO {
 		}
 	}
 	
-	public void write(ArrayList<String> line) {
+	public void write(List<String> list) {
 		try {
-			oos.writeObject(line);
+			oos.writeObject(list);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
