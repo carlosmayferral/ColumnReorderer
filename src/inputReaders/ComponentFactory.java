@@ -2,6 +2,9 @@ package inputReaders;
 
 import java.io.FileNotFoundException;
 
+import columnReorderer.CPTtoDatabaseRearranger;
+import columnReorderer.ColumnRearrangementType;
+import columnReorderer.ColumnRearranger;
 import columnReorderer.InvalidArgumentException;
 
 public class ComponentFactory {
@@ -27,6 +30,13 @@ public class ComponentFactory {
 			return new CsvSpreadsheetReader(path);
 		}
 		else throw new FileNotRecognizedException("Selected file does not have a recognised extension");
+	}
+
+	public ColumnRearranger getColumnRearranger(ColumnRearrangementType type) {
+		if (type == ColumnRearrangementType.CPT_DEFAULT_TO_DATABASE) {
+			return new CPTtoDatabaseRearranger();
+		}
+		return null;
 	}
 
 }

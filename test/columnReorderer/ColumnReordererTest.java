@@ -17,7 +17,7 @@ class ColumnReordererTest {
 	}
 
 	@Test
-	void invalidRearrangerIndexThrowsException() {
+	void invalidRearrangerIndexThrowsException() throws WrongSpreadSheetFormatException {
 		try {
 			cr.run(new String[] {
 					"test.csv",
@@ -32,7 +32,7 @@ class ColumnReordererTest {
 	}
 	
 	@Test
-	void invalidRearrangerStringThrowsException() {
+	void invalidRearrangerStringThrowsException() throws WrongSpreadSheetFormatException {
 		try {
 			cr.run(new String[] {
 					"test.csv",
@@ -47,7 +47,7 @@ class ColumnReordererTest {
 	}
 	
 	@Test
-	void invalidFileExtensionThrowsException() {
+	void invalidFileExtensionThrowsException() throws WrongSpreadSheetFormatException {
 		try {
 			cr.run(new String[] {
 					"test.do",
@@ -62,7 +62,7 @@ class ColumnReordererTest {
 	}
 	
 	@Test
-	void nonExistentFileThrowsException() {
+	void nonExistentFileThrowsException() throws WrongSpreadSheetFormatException {
 		try {
 			cr.run(new String[] {
 					"doesNotExist.csv",

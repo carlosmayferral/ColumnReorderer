@@ -3,6 +3,7 @@ package columnReorderer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import inputReaders.ComponentFactory;
 import inputReaders.CsvFileWriter;
@@ -15,6 +16,7 @@ public class ColumnReorderer {
 	private SpreadsheetFileReader fileReader;
 	private CsvFileWriter filewriter;
 	private TempFileIO tempFileIO;
+	private ColumnRearranger columnRearranger;
 	
 
 	public static void main(String[] args) throws IOException {
@@ -46,11 +48,18 @@ public class ColumnReorderer {
 				System.out.println(e.getMessage());
 				System.exit(-5);
 			}
+		} catch (WrongSpreadSheetFormatException e) {
+			System.out.println("ERROR: Spreadsheet not in expected format");
+			e.printStackTrace();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
 	public ColumnReorderer() {
 		this.tempFileIO = new TempFileIO();
+		this.filewriter = new CsvFileWriter();
 	}
 	
 	/**
@@ -58,8 +67,9 @@ public class ColumnReorderer {
 	 * @param args
 	 * @throws InvalidArgumentException 
 	 * @throws IOException 
+	 * @throws WrongSpreadSheetFormatException 
 	 */
-	public void run(String[] args) throws InvalidArgumentException, IOException {
+	public void run(String[] args) throws InvalidArgumentException, IOException, WrongSpreadSheetFormatException {
 		
 		//Check if correct usage
 		if(args.length != 2) {
@@ -69,11 +79,14 @@ public class ColumnReorderer {
 		//Check second argument
 		try {
 			ColumnRearrangementType type = ColumnRearrangementType.values()[Integer.parseInt(args[1])];
+			columnRearranger = ComponentFactory.getInstance().getColumnRearranger(type);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new InvalidArgumentException("No such rearrangement index", e);
 		} catch (NumberFormatException e) {
 			throw new InvalidArgumentException("Rearrangement index is not an integer", e);
 		}
+		
+		
 		
 		//Check first argument
 		try {
@@ -90,7 +103,8 @@ public class ColumnReorderer {
 		tempFileIO.createFile();
 		try {
 			while(fileReader.hasData()){
-				tempFileIO.write(fileReader.readLine());
+				List<String> line = fileReader.readLine();
+				tempFileIO.write(line);
 			}
 		} catch (IOException e) {
 			throw e;
@@ -102,16 +116,34 @@ public class ColumnReorderer {
 		new File(path).delete();
 		
 		//Create new file
+		filewriter.createFile(path);
 		
-		
-		//Load in original data
+		//Load in original saved data
+		tempFileIO.openFile();
 		
 		//Use rearranger to rearrange columns
+		while(tempFileIO.hasData()){
+			List<String> originalStringList = tempFileIO.readStringList();
+			List<String> reorderedStringList = columnRearranger.rearrange(originalStringList);
+			filewriter.writeLine(reorderedStringList);
+		}
+		tempFileIO.closeFile();
 		
 		//Write new file
+		filewriter.saveFile();
 		
 		//Write backup old file
+		String modifiedPath = path.replace(".csv", "old.csv");
+		filewriter.createFile(modifiedPath);
+		tempFileIO.openFile();
+		while(tempFileIO.hasData()){
+			List<String> originalStringList = tempFileIO.readStringList();
+			filewriter.writeLine(originalStringList);
+		}
+		tempFileIO.closeFile();
+		filewriter.saveFile();
 		
+		tempFileIO.deleteTempFile();
 		
 	}
 	
