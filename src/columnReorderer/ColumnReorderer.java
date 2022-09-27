@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import inputReaders.ComponentFactory;
+import inputReaders.CsvFileWriter;
 import inputReaders.FileNotRecognizedException;
 import inputReaders.SpreadsheetFileReader;
 import inputReaders.TempFileIO;
@@ -12,6 +13,7 @@ import inputReaders.TempFileIO;
 public class ColumnReorderer {
 	
 	private SpreadsheetFileReader fileReader;
+	private CsvFileWriter filewriter;
 	private TempFileIO tempFileIO;
 	
 
@@ -94,11 +96,13 @@ public class ColumnReorderer {
 			throw e;
 		}
 		tempFileIO.saveFile();
+		fileReader.close();
 		
 		//Delete original
-		new File(args[0]).delete();
+		new File(path).delete();
 		
 		//Create new file
+		
 		
 		//Load in original data
 		
