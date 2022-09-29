@@ -1,8 +1,6 @@
 package inputReaders;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,5 +15,7 @@ public interface SpreadsheetFileReader {
 	public boolean hasData() throws IOException;
 
 	public void close() throws IOException;
+	
+	public List<List<String>> readFile() throws IOException;
 
 }

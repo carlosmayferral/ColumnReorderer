@@ -2,6 +2,11 @@ package inputReaders;
 
 public class FileNotRecognizedException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2545043677764582315L;
+
 	public FileNotRecognizedException() {
 		// TODO Auto-generated constructor stub
 	}

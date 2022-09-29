@@ -9,13 +9,12 @@ import inputReaders.ComponentFactory;
 import inputReaders.CsvFileWriter;
 import inputReaders.FileNotRecognizedException;
 import inputReaders.SpreadsheetFileReader;
-import inputReaders.TempFileIO;
 
 public class ColumnReorderer {
 	
+	
 	private SpreadsheetFileReader fileReader;
 	private CsvFileWriter filewriter;
-	private TempFileIO tempFileIO;
 	private ColumnRearranger columnRearranger;
 	
 
@@ -58,7 +57,6 @@ public class ColumnReorderer {
 	}
 	
 	public ColumnReorderer() {
-		this.tempFileIO = new TempFileIO();
 		this.filewriter = new CsvFileWriter();
 	}
 	
@@ -86,8 +84,6 @@ public class ColumnReorderer {
 			throw new InvalidArgumentException("Rearrangement index is not an integer", e);
 		}
 		
-		
-		
 		//Check first argument
 		try {
 			fileReader = ComponentFactory.getInstance().getSpreadSheetReader(args[0]);
@@ -99,52 +95,63 @@ public class ColumnReorderer {
 		
 		String path = args[0];
 		
-		//Read original into temp file
-		tempFileIO.createFile();
-		try {
-			while(fileReader.hasData()){
-				List<String> line = fileReader.readLine();
-				tempFileIO.write(line);
-			}
-		} catch (IOException e) {
-			throw e;
-		}
-		tempFileIO.saveFile();
+		//Read original into RAM
+		List<List<String>> fileContent = fileReader.readFile();
 		fileReader.close();
 		
-		//Delete original
-		new File(path).delete();
+		
+//		tempFileIO.createFile();
+//		try {
+//			while(fileReader.hasData()){
+//				List<String> line = fileReader.readLine();
+//				tempFileIO.write(line);
+//			}
+//		} catch (IOException e) {
+//			throw e;
+//		}
+//		tempFileIO.saveFile();
+//		fileReader.close();
+		
+		//Rename original
+		new File(path).renameTo(new File(path.replace(".csv", "old.csv")));
 		
 		//Create new file
 		filewriter.createFile(path);
 		
-		//Load in original saved data
-		tempFileIO.openFile();
+//		//Load in original saved data
+//		tempFileIO.openFile();
 		
-		//Use rearranger to rearrange columns
-		while(tempFileIO.hasData()){
-			List<String> originalStringList = tempFileIO.readStringList();
-			List<String> reorderedStringList = columnRearranger.rearrange(originalStringList);
+		//Use rearranger to rearrange columns from RAM
+		for(List<String> line : fileContent) {
+			List<String> reorderedStringList = columnRearranger.rearrange(line);
 			filewriter.writeLine(reorderedStringList);
 		}
-		tempFileIO.closeFile();
+		
+		
+//		while(tempFileIO.hasData()){
+//			List<String> originalStringList = tempFileIO.readStringList();
+//			List<String> reorderedStringList = columnRearranger.rearrange(originalStringList);
+//			filewriter.writeLine(reorderedStringList);
+//		}
+		
+//		tempFileIO.closeFile();
 		
 		//Write new file
 		filewriter.saveFile();
 		
-		//Write backup old file
-		String modifiedPath = path.replace(".csv", "old.csv");
-		filewriter.createFile(modifiedPath);
-		tempFileIO.openFile();
-		while(tempFileIO.hasData()){
-			List<String> originalStringList = tempFileIO.readStringList();
-			filewriter.writeLine(originalStringList);
-		}
-		tempFileIO.closeFile();
-		filewriter.saveFile();
-		
-		tempFileIO.deleteTempFile();
-		
+//		//Write backup old file
+//		String modifiedPath = path.replace(".csv", "old.csv");
+//		filewriter.createFile(modifiedPath);
+//		tempFileIO.openFile();
+//		while(tempFileIO.hasData()){
+//			List<String> originalStringList = tempFileIO.readStringList();
+//			filewriter.writeLine(originalStringList);
+//		}
+//		tempFileIO.closeFile();
+//		filewriter.saveFile();
+//		
+//		tempFileIO.deleteTempFile();
+//		
 	}
 	
 	private static void printUsage() {

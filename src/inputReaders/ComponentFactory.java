@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import columnReorderer.CPTtoDatabaseRearranger;
 import columnReorderer.ColumnRearrangementType;
 import columnReorderer.ColumnRearranger;
-import columnReorderer.InvalidArgumentException;
 
 public class ComponentFactory {
 	

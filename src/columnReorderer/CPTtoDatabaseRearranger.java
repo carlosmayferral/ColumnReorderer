@@ -1,14 +1,12 @@
 package columnReorderer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class CPTtoDatabaseRearranger implements ColumnRearranger {
 	
 	private static final int TOTAL_INPUT_SIZE = 31;
-	private static final int TOTAL_OUTPUT_SIZE = 28;
+	//private static final int TOTAL_OUTPUT_SIZE = 28;
 	
 	public CPTtoDatabaseRearranger() {
 	}

@@ -30,8 +30,13 @@ public class CsvSpreadsheetReader implements SpreadsheetFileReader {
 
 	@Override
 	public List<String> readLine() throws IOException {
-		String[] delimited = br.readLine().split(DELIMITER);
-		return Arrays.asList(delimited);
+		String line = br.readLine();
+		if(line != null) {
+			return Arrays.asList(line.split(DELIMITER));
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override
@@ -47,6 +52,19 @@ public class CsvSpreadsheetReader implements SpreadsheetFileReader {
 	public void close() throws IOException {
 		br.close();
 		
+	}
+
+	@Override
+	public List<List<String>> readFile() throws IOException {
+		//Initialize result container
+		List<List<String>> listOfLists = new ArrayList<>();
+		//Buffer for testing read
+		List<String> line = null;
+		//While there is input in stream
+		while ((line = readLine())!= null) {
+			listOfLists.add(line);
+		}
+		return listOfLists;
 	}
 
 

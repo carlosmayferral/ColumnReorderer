@@ -2,6 +2,11 @@ package columnReorderer;
 
 public class WrongSpreadSheetFormatException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7921390796855928099L;
+
 	public WrongSpreadSheetFormatException() {
 		// TODO Auto-generated constructor stub
 	}
