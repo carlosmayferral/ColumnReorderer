@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import columnReorderer.CPTtoDatabaseRearranger;
 import columnReorderer.ColumnRearrangementType;
 import columnReorderer.ColumnRearranger;
+import columnReorderer.PairwiseHabToDatabaseRearranger;
 
 public class ComponentFactory {
 	
@@ -34,6 +35,9 @@ public class ComponentFactory {
 	public ColumnRearranger getColumnRearranger(ColumnRearrangementType type) {
 		if (type == ColumnRearrangementType.CPT_DEFAULT_TO_DATABASE) {
 			return new CPTtoDatabaseRearranger();
+		}
+		else if (type == ColumnRearrangementType.PAIRWISE_HAB_TO_DATABASE) {
+			return new PairwiseHabToDatabaseRearranger();
 		}
 		return null;
 	}

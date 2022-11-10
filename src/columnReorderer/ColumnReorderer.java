@@ -161,6 +161,7 @@ public class ColumnReorderer {
 		for(ColumnRearrangementType type : ColumnRearrangementType.values()) {
 			System.out.print(i + " : ");
 			System.out.println(type.name());
+			i++;
 		}
 	}
 
